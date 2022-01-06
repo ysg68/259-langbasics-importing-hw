@@ -59,7 +59,7 @@ col_names  <-  c("trial_num","speed_actual","speed_response","correct")
 
 ### QUESTION 4 ----- 
 
-# Use list files to get a list of the full file names of everything in "data_A"
+# Use list.files() to get a list of the full file names of everything in "data_A"
 # Store it to a variable
 
 # ANSWER
@@ -79,7 +79,8 @@ col_names  <-  c("trial_num","speed_actual","speed_response","correct")
 # Use the col_types argument to force trial number to be an integer "i"
 # You might need to check ?read_tsv to see what options to use for the columns
 # trial_num should be integer, speed_actual and speed_response should be character, and correct should be logical
-# After fixing it, create the column to add 100 to the trial numbers (it should work now, but you'll see a warning)
+# After fixing it, create the column to add 100 to the trial numbers 
+# (It should work now, but you'll see a warning because of the erroneous data point)
 
 # ANSWER
 
