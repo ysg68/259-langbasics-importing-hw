@@ -104,6 +104,24 @@ col_info <- spec(ds)
 col_info$cols$trial_num <- col_double() #Then change the ones you want
 ds <- read_tsv(fnames, skip = 7, col_names = col_names, col_types = col_info) #Then use that when reading
 
+# FIX THE MISSING TRIAL NUMBER
+library(tidyverse)
+ds <- ds %>% group_by(filename) %>% 
+  mutate(lag_trial = lag(trial_num) + 1,
+         lead_trial = lead(trial_num) - 1,
+         trial_num = ifelse(is.na(trial_num), lag_trial, trial_num),
+         trial_num = ifelse(is.na(trial_num), lead_trial, trial_num)) %>% 
+  select(-lag_trial, - lead_trial) %>% 
+  ungroup()
+# This is a bit overboard but it's general and should fix any of them
+# even if you have a missing trial 1 or trial 20
+# Similar logic could be used to detect incorrectly numbered trials that are out of sequence
+
+# If I had one missing trial for a participants I would probably just hard code it:
+ds <- ds %>% mutate(
+  trial_num = ifelse(filename == "data_A/6191_5.txt" & is.na(trial_num), 20, trial_num)
+) 
+
 ### QUESTION 7 -----
 
 # Now that the column type problem is fixed, take a look at ds
