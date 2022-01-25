@@ -106,7 +106,7 @@ ds <- read_tsv(fnames, skip = 7, col_names = col_names, col_types = col_info) #T
 
 # FIX THE MISSING TRIAL NUMBER
 library(tidyverse)
-ds <- read_tsv(fnames, skip = 7, col_names = col_names, col_types = "iccl")
+ds <- read_tsv(fnames, skip = 7, col_names = col_names, col_types = "iccl",id = "filename", )
 
 ds <- ds %>% group_by(filename) %>% 
   mutate(lag_trial = lag(trial_num) + 1,
