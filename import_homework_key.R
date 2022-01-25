@@ -125,6 +125,7 @@ ds <- ds %>% mutate(
   trial_num = ifelse(filename == "data_A/6191_5.txt" & is.na(trial_num), 20, trial_num)
 ) 
 
+
 # Here's a neat way to do this I found online
 ds <- read_tsv(fnames, skip = 7, col_names = col_names, col_types = "iccl") #RELOAD
 ds$trial_num <- na_if(ds$trial_num, 3) # Let's create even more problems
@@ -132,7 +133,8 @@ ds$trial_num <- na_if(ds$trial_num, 4) # Let's create even more problems
 ds$trial_num <- na_if(ds$trial_num, 5) # Let's create even more problems
 
 #This one works even on chunks of missing data
-ds <- ds %>% group_by(tmp = cumsum(!is.na(trial_num))) %>%
+ds <- ds %>% mutate(tmp = cumsum(!is.na(trial_num))) %>% 
+  group_by(tmp) %>%
   mutate(trial_num = trial_num[1] + 0:(length(trial_num)-1)) %>%
   ungroup() %>%
   select(-tmp)
