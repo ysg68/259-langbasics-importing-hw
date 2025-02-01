@@ -56,6 +56,8 @@ ds1 <- read_delim("data_A/6191_1.txt", skip = 7, col_names = col_names)
 
 # ANSWER
 ds1$trial_mod <- ds1$trial_num + 100
+write_csv(ds1, "data_B/6191_1.csv") # There is no 'data_cleaned' folder so was it 'data_B'?
+
 
 ### QUESTION 4 ----- 
 
