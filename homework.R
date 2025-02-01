@@ -18,7 +18,7 @@
 # Load the readr package
 
 # ANSWER
-
+library(readr)
 
 ### QUESTION 2 ----- 
 
@@ -45,7 +45,7 @@
 col_names  <-  c("trial_num","speed_actual","speed_response","correct")
 
 # ANSWER
-
+ds1 <- read_delim("data_A/6191_1.txt", skip = 7, col_names = col_names)
 
 
 ### QUESTION 3 ----- 
@@ -55,7 +55,7 @@ col_names  <-  c("trial_num","speed_actual","speed_response","correct")
 # Then write the new data to a CSV file in the "data_cleaned" folder
 
 # ANSWER
-
+ds1$trial_mod <- ds1$trial_num + 100
 
 ### QUESTION 4 ----- 
 
@@ -63,13 +63,15 @@ col_names  <-  c("trial_num","speed_actual","speed_response","correct")
 # Store it to a variable
 
 # ANSWER
-
+ds_all <- list.files("data_A", all.files = FALSE, full.names = TRUE)
+ds_all
 
 ### QUESTION 5 ----- 
 
 # Read all of the files in data_A into a single tibble called ds
 
 # ANSWER
+ds <- read_delim(ds_all, skip = 7, col_names = col_names)
 
 
 ### QUESTION 6 -----
@@ -84,6 +86,9 @@ col_names  <-  c("trial_num","speed_actual","speed_response","correct")
 
 # ANSWER
 
+ds$trial_num[ds$trial_num == 'ten'] <- 10
+ds$trial_num <- as.integer(ds$trial_num)
+
 
 ### QUESTION 7 -----
 
@@ -94,6 +99,11 @@ col_names  <-  c("trial_num","speed_actual","speed_response","correct")
 
 # ANSWER
 
+ds_re <- read_tsv(ds_all, skip = 7, col_names = col_names, id = "dataA")
+
+ds_re$trial_num[ds_re$trial_num == 'ten'] <- 10
+ds_re$trial_num <- as.integer(ds_re$trial_num)
+
 
 ### QUESTION 8 -----
 
@@ -103,3 +113,8 @@ col_names  <-  c("trial_num","speed_actual","speed_response","correct")
 
 # ANSWER
 
+library(readxl)
+participant <- read_excel("data_B/participant_info.xlsx", sheet = 1)
+
+colnames <- c("id", "date")
+test_date <- read_excel("data_B/participant_info.xlsx", sheet = 2, col_names = colnames)
