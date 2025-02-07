@@ -1,5 +1,5 @@
 #PSYC 259 Homework 1 - Data Import
-#For full credit, provide answers for at least 6/8 questions
+#For full credit, provide answers for at least 6/8 questions (8/8)
 
 #List names of students collaborating with (no more than 2): 
 
@@ -47,6 +47,9 @@ col_names  <-  c("trial_num","speed_actual","speed_response","correct")
 # ANSWER
 ds1 <- read_delim("data_A/6191_1.txt", skip = 7, col_names = col_names)
 
+#MComment: Looks good, though note you can also use read_tsv (with the same commands)
+ds1 <- read_tsv("data_A/6191_1.txt", skip = 7, col_names = col_names)
+
 
 ### QUESTION 3 ----- 
 
@@ -58,6 +61,7 @@ ds1 <- read_delim("data_A/6191_1.txt", skip = 7, col_names = col_names)
 ds1$trial_mod <- ds1$trial_num + 100
 write_csv(ds1, "data_B/6191_1.csv") # There is no 'data_cleaned' folder so was it 'data_B'?
 
+#MComment: Technically you needed to make a new folder, either on your computer or using dir.create
 
 ### QUESTION 4 ----- 
 
@@ -67,6 +71,8 @@ write_csv(ds1, "data_B/6191_1.csv") # There is no 'data_cleaned' folder so was i
 # ANSWER
 ds_all <- list.files("data_A", all.files = FALSE, full.names = TRUE)
 ds_all
+
+#MComment: You don't need the all.files command in this instance (just as a headsup)
 
 ### QUESTION 5 ----- 
 
@@ -91,6 +97,9 @@ ds <- read_delim(ds_all, skip = 7, col_names = col_names)
 ds$trial_num[ds$trial_num == 'ten'] <- 10
 ds$trial_num <- as.integer(ds$trial_num)
 
+#Mcomment: you can also change to an interger with the col_types command
+ds <- read_tsv(ds_all, skip = 7, col_names = col_names, col_types = "iccl")
+
 
 ### QUESTION 7 -----
 
@@ -106,6 +115,20 @@ ds_re <- read_tsv(ds_all, skip = 7, col_names = col_names, id = "dataA")
 ds_re$trial_num[ds_re$trial_num == 'ten'] <- 10
 ds_re$trial_num <- as.integer(ds_re$trial_num)
 
+#Mcomment: Note from the key - 
+
+library(tidyr)
+ds <- ds %>% extract(filename, into = c("id","session"), "(\\d{4})_(\\d{1})") 
+#Extract takes a character variable, names of where to put the extracted data,
+# and then a regular expression saying what pattern to look for.
+# each part in parentheses is one variable to extract
+# \\d{4} means 4 digits, \\d{1} means 1 digit
+
+# Or use "separate", which breaks everything by any delimiter (or a custom one)
+# data_A/6191_1.txt will turn into:
+# data   A   6191   1   txt
+# if we only want to keep 6191 and 1, we can put NAs for the rest
+ds <- ds %>% separate(filename, into = c(NA, NA, "id", "session", NA))
 
 ### QUESTION 8 -----
 
